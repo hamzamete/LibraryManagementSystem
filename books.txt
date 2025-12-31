@@ -1,0 +1,5 @@
+101,Introduction to Algorithms,Thomas Cormen,true
+102,Clean Code,Robert C. Martin,true
+103,Design Patterns,Erich Gamma,false
+104,Head First Java,Kathy Sierra,true
+105,Data Structures and Algorithms in Java,Robert Lafore,true
