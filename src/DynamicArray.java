@@ -1,19 +1,39 @@
 /**
- * Custom implementation of a Dynamic Array.
- * It resizes itself when full.
+ * Custom implementation of a Dynamic Array for storing Book objects.
+ * This class mimics the behavior of Java's ArrayList but is implemented
+ * manually to understand dynamic resizing.
  */
 public class DynamicArray {
+
+    // Internal array that stores Book objects
     private Book[] books;
+
+    // Number of elements currently stored in the array
     private int size;
+
+    // Current capacity of the internal array
     private int capacity;
 
+    /**
+     * Constructor that initializes the dynamic array
+     * with a given initial capacity.
+     *
+     * @param initialCapacity initial size of the array
+     */
     public DynamicArray(int initialCapacity) {
         this.capacity = initialCapacity;
         this.books = new Book[capacity];
         this.size = 0;
     }
 
-    // Time Complexity: O(1) amortized, O(n) worst-case (when resizing)
+    /**
+     * Adds a new Book to the dynamic array.
+     * If the array is full, its capacity is doubled.
+     *
+     * Time Complexity:
+     * Amortized: O(1)
+     * Worst case: O(n) when resizing occurs
+     */
     public void add(Book book) {
         if (size == capacity) {
             resize();
@@ -22,7 +42,13 @@ public class DynamicArray {
         size++;
     }
 
-    // Time Complexity: O(n) - involves copying elements
+    /**
+     * Resizes the internal array by doubling its capacity.
+     * Copies all existing elements to the new array.
+     *
+     * Time Complexity:
+     * O(n), where n is the number of stored elements
+     */
     private void resize() {
         capacity *= 2;
         Book[] newBooks = new Book[capacity];
@@ -32,7 +58,16 @@ public class DynamicArray {
         books = newBooks;
     }
 
-    // Time Complexity: O(1)
+    /**
+     * Returns the Book at the specified index.
+     *
+     * Time Complexity:
+     * O(1)
+     *
+     * @param index index of the requested element
+     * @return Book at the given index
+     * @throws IndexOutOfBoundsException if index is invalid
+     */
     public Book get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
@@ -40,7 +75,15 @@ public class DynamicArray {
         return books[index];
     }
 
-    // Time Complexity: O(n) - shifting elements required
+    /**
+     * Removes the Book at the specified index.
+     * Elements to the right are shifted left.
+     *
+     * Time Complexity:
+     * O(n), due to element shifting
+     *
+     * @param index index of the element to remove
+     */
     public void remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index out of bounds");
@@ -48,11 +91,19 @@ public class DynamicArray {
         for (int i = index; i < size - 1; i++) {
             books[i] = books[i + 1];
         }
-        books[size - 1] = null; // Help GC
+        books[size - 1] = null; // Helps garbage collection
         size--;
     }
 
-    // Time Complexity: O(n) - linear search
+    /**
+     * Searches for a book by its ID using linear search.
+     *
+     * Time Complexity:
+     * O(n)
+     *
+     * @param id book ID to search for
+     * @return Book if found, otherwise null
+     */
     public Book findById(int id) {
         for (int i = 0; i < size; i++) {
             if (books[i].id == id) {
@@ -62,12 +113,26 @@ public class DynamicArray {
         return null;
     }
 
-    // Time Complexity: O(1)
+    /**
+     * Returns the number of elements currently stored
+     * in the dynamic array.
+     *
+     * Time Complexity:
+     * O(1)
+     */
     public int size() {
         return size;
     }
 
-    // Time Complexity: O(n) - Linear search to find index
+    /**
+     * Finds the index of a book by its ID.
+     *
+     * Time Complexity:
+     * O(n)
+     *
+     * @param id book ID to search for
+     * @return index if found, otherwise -1
+     */
     public int findIndexById(int id) {
         for (int i = 0; i < size; i++) {
             if (books[i].id == id) {
