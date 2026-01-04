@@ -22,8 +22,19 @@ The project is designed according to the given project manual and includes all
 required classes and functionalities.
 
 GROUP MEMBERS:
-Full Name: Zeynep Aybuke Ilık
+Full Name: Eren BÜLBÜL
+Student ID: 2311051055
+
+Full Name: Zeynep Aybuke ILIK
 Student ID: 2311051060
+
+Full Name: Ozan AKDENİZ
+Student ID: 2311051043
+
+Full Name: Hamza Mete ERBÖLÜKBAŞ
+Student ID: 2311051070
+
+
 
 NOTES:
 All source code files are organized properly.
