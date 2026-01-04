@@ -81,5 +81,3 @@ public class Queue {
         return front == null;
     }
 }
-
-doğru mu
