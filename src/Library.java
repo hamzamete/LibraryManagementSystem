@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Library class is the core manager of the Library Management System.
@@ -26,6 +27,12 @@ public class Library {
     // File used to persist book data
     private final String BOOK_FILE = "books.txt";
 
+    // Stores the list of registered users loaded from the file
+    private ArrayList<String> userList = new ArrayList<>();
+
+    // File path for the authorized users list
+    private final String USER_FILE = "users.txt";
+
     /**
      * Constructor.
      * Loads books from file into the catalog and BST when the system starts.
@@ -35,6 +42,7 @@ public class Library {
      */
     public Library() {
         loadBooks();
+        loadUsers();
     }
 
     /**
@@ -262,6 +270,73 @@ public class Library {
             }
         } catch (Exception e) {
             // If saving fails, changes may not persist.
+        }
+    }
+
+    /**
+     * Loads authorized user names from the text file into memory.
+     * Checks line by line and adds non-empty names to the list.
+     *
+     * Time Complexity: O(n) where n is the number of lines in the file
+     */
+    private void loadUsers() {
+        try (Scanner sc = new Scanner(new File(USER_FILE))) {
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine().trim();
+                // Add only if the line is not empty
+                if (!line.isEmpty()) {
+                    userList.add(line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Warning: " + USER_FILE + " not found. User list is empty.");
+        }
+    }
+
+    /**
+     * Checks if the provided user name exists in the registered user list.
+     * The check is case-insensitive (e.g., "ali veli" matches "Ali Veli").
+     *
+     * @param name The user name to validate
+     * @return true if the user is found, false otherwise
+     */
+    public boolean isValidUser(String name) {
+        for (String user : userList) {
+            if (user.equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Registers a new user into the system.
+     * - Checks if the user already exists to prevent duplicates.
+     * - Adds the user to the in-memory list.
+     * - Appends the user to the users.txt file.
+     *
+     * @param name The name of the user to register
+     */
+    public void registerUser(String name) {
+        // Step 1: Check for duplicates
+        if (isValidUser(name)) {
+            System.out.println("Error: User '" + name + "' is already registered.");
+            return;
+        }
+
+        // Step 2: Add to in-memory list
+        userList.add(name);
+
+        // Step 3: Append to the text file
+        // FileWriter(file, true) opens the file in append mode
+        try (FileWriter fw = new FileWriter(USER_FILE, true);
+             PrintWriter pw = new PrintWriter(fw)) {
+
+            pw.println(name);
+            System.out.println("User '" + name + "' registered successfully.");
+
+        } catch (IOException e) {
+            System.out.println("Error: Could not save user to file.");
         }
     }
 }

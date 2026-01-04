@@ -51,6 +51,7 @@ public class Main {
             System.out.println("9. Borrow Book (Direct)");
             System.out.println("10. Return Book");
             System.out.println("11. Undo Last Action");
+            System.out.println("12. Register New User");
             System.out.println("0. Exit");
             System.out.print("Choice: ");
 
@@ -158,20 +159,34 @@ public class Main {
                     lib.listAlpha();
                 }
 
-                case 7 -> {
-                    /*
-                     * OPTION 7: Add a borrow request to the waiting list.
-                     * Queue ensures First-In-First-Out (FIFO) order.
-                     */
+                case 7 -> {/*
+                 * OPTION 7: Add a borrow request to the waiting list.
+                 * * Step 1: Validate the user against users.txt
+                 * Step 2: Validate the input format for Book ID
+                 * Step 3: Add to queue if valid
+                 */
                     System.out.print("Enter User Name: ");
-                    String user = sc.nextLine();
+                    String user = sc.nextLine().trim();
 
-                    System.out.print("Enter Book ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+                    // Check if the user is registered in the system
+                    if (lib.isValidUser(user)) {
+                        System.out.print("Enter Book ID: ");
 
-                    lib.requestBorrow(user, id);
-                    System.out.println("Request added to queue.");
+                        // Input validation for integer ID
+                        if (sc.hasNextInt()) {
+                            int id = sc.nextInt();
+                            sc.nextLine(); // Consume newline
+
+                            lib.requestBorrow(user, id);
+                            System.out.println("Request added to queue.");
+                        } else {
+                            System.out.println("Invalid input! Book ID must be a number.");
+                            sc.nextLine(); // Clear invalid input
+                        }
+                    } else {
+                        // Error message if user is not in users.txt
+                        System.out.println("Error: User '" + user + "' is not registered in the system.");
+                    }
                 }
 
                 case 8 -> {
@@ -183,18 +198,33 @@ public class Main {
                     lib.processRequests();
                 }
 
-                case 9 -> {
-                    /*
-                     * OPTION 9: Borrow a book directly by ID.
-                     * This operation is also recorded for undo functionality.
-                     */
-                    System.out.print("Enter Book ID to borrow: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+                case 9 -> {/*
+                 * OPTION 9: Borrow a book directly by ID.
+                 * Updated to include user validation before processing.
+                 */
+                    System.out.print("Enter User Name: ");
+                    String user = sc.nextLine().trim();
 
-                    lib.borrowBook(id);
-                    System.out.println("Operation completed.");
-                }
+                    // Step 1: Validate if the user exists in users.txt
+                    if (lib.isValidUser(user)) {
+                        System.out.print("Enter Book ID to borrow: ");
+
+                        // Step 2: Input validation for Book ID
+                        if (sc.hasNextInt()) {
+                            int id = sc.nextInt();
+                            sc.nextLine(); // Clear buffer after integer input
+
+                            // Step 3: Perform the borrow operation
+                            // The user name is validated, so we allow the transaction.
+                            lib.borrowBook(id);
+                        } else {
+                            System.out.println("Invalid input! Book ID must be a number.");
+                            sc.nextLine(); // Clear invalid input
+                        }
+                    } else {
+                        // Error message if user is not registered
+                        System.out.println("Error: User '" + user + "' is not registered in the system.");
+                    }}
 
                 case 10 -> {
                     /*
@@ -217,6 +247,20 @@ public class Main {
                     System.out.println("Undoing last action...");
                     lib.undo();
                     System.out.println("Undo completed.");
+                }
+
+                case 12 -> {/*
+                 * OPTION 12: Register a new user.
+                 * Takes a name input and adds it to the system database.
+                 */
+                    System.out.print("Enter Name to Register: ");
+                    String name = sc.nextLine().trim();
+
+                    if (!name.isEmpty()) {
+                        lib.registerUser(name);
+                    } else {
+                        System.out.println("Error: Name cannot be empty.");
+                    }
                 }
 
                 case 0 -> {
