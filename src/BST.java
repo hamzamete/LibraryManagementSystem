@@ -1,39 +1,33 @@
-/**
- * Binary Search Tree to store books sorted by Title.
- */
 public class BST {
+
     private class Node {
         Book book;
         Node left, right;
 
         Node(Book book) {
             this.book = book;
-            this.left = this.right = null;
         }
     }
 
     private Node root;
 
-    // Time Complexity: O(h) where h is height. Worst case O(n).
+    // O(h) worst O(n)
     public void insert(Book book) {
         root = insertRec(root, book);
     }
 
     private Node insertRec(Node root, Book book) {
-        if (root == null) {
-            root = new Node(book);
-            return root;
-        }
-        // Alphabetical comparison
+        if (root == null) return new Node(book);
+
         if (book.title.compareToIgnoreCase(root.book.title) < 0)
             root.left = insertRec(root.left, book);
-        else if (book.title.compareToIgnoreCase(root.book.title) > 0)
+        else
             root.right = insertRec(root.right, book);
 
         return root;
     }
 
-    // Time Complexity: O(h) where h is height. Worst case O(n).
+    // O(h)
     public Book search(String title) {
         return searchRec(root, title);
     }
@@ -44,11 +38,10 @@ public class BST {
 
         if (title.compareToIgnoreCase(root.book.title) < 0)
             return searchRec(root.left, title);
-        else
-            return searchRec(root.right, title);
+        return searchRec(root.right, title);
     }
 
-    // Time Complexity: O(n) - visits every node
+    // O(n)
     public void inOrderTraversal() {
         inOrderRec(root);
     }
@@ -59,5 +52,34 @@ public class BST {
             System.out.println(root.book);
             inOrderRec(root.right);
         }
+    }
+
+    // O(h)
+    public void delete(String title) {
+        root = deleteRec(root, title);
+    }
+
+    private Node deleteRec(Node root, String title) {
+        if (root == null) return null;
+
+        if (title.compareToIgnoreCase(root.book.title) < 0)
+            root.left = deleteRec(root.left, title);
+        else if (title.compareToIgnoreCase(root.book.title) > 0)
+            root.right = deleteRec(root.right, title);
+        else {
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+
+            Node min = findMin(root.right);
+            root.book = min.book;
+            root.right = deleteRec(root.right, min.book.title);
+        }
+        return root;
+    }
+
+    private Node findMin(Node root) {
+        while (root.left != null)
+            root = root.left;
+        return root;
     }
 }
