@@ -31,7 +31,6 @@ public class Queue {
 
       /**
         * Adds a new borrow request to the end of the queue.
-        *
         * Time Complexity: O(1)
         */
       public void enqueue(String userName, int bookId) {
@@ -51,9 +50,7 @@ public class Queue {
       /**
         * Removes and returns the request at the front of the queue.
         * This represents processing the earliest borrow request.
-        *
         * Time Complexity: O(1)
-        *
         * @return the removed Request, or null if the queue is empty
         */
       public Request dequeue() {
@@ -72,9 +69,7 @@ public class Queue {
 
       /**
         * Checks whether the queue is empty.
-        *
         * Time Complexity: O(1)
-        *
         * @return true if the queue is empty, false otherwise
         */
       public boolean isEmpty() {
