@@ -160,10 +160,23 @@ public class Library {
      */
     public void borrowBook(int id) {
         Book b = catalog.findById(id);
+
+        // Case 1: Book exists and is available
         if (b != null && b.isAvailable) {
             b.isAvailable = false;
+            // Note: If fields are private, use b.setAvailable(false);
+
             stack.push(Stack.ActionType.BORROW, id);
             saveBooks();
+            System.out.println("Book borrowed successfully: " + b.title);
+        }
+        // Case 2: Book exists but is currently unavailable (already borrowed)
+        else if (b != null && !b.isAvailable) {
+            System.out.println("Error: This book is currently unavailable (borrowed).");
+        }
+        // Case 3: Book does not exist (Invalid ID)
+        else {
+            System.out.println("Error: Book with ID " + id + " not found.");
         }
     }
 

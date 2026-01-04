@@ -75,4 +75,21 @@ public class Queue {
       public boolean isEmpty() {
             return front == null;
       }
+
+    /**
+     * Displays all requests in the queue without removing them.
+     */
+    public void display() {
+        if (isEmpty()) {
+            System.out.println("Queue is empty.");
+            return;
+        }
+
+        Request current = front;
+        System.out.println("Current Borrow Requests:");
+        while (current != null) {
+            System.out.println("- User: " + current.userName + ", Book ID: " + current.bookId);
+            current = current.next;
+        }
+    }
 }
